@@ -50,7 +50,7 @@ load_gcs_to_bigquery_raw = BigQueryInsertJobOperator(
                 "tableId": "clima_raw"
             },
             "sourceFormat": "NEWLINE_DELIMITED_JSON",
-            "writeDisposition": "WRITE_TRUNCATE",
+            "writeDisposition": "WRITE_APPEND",
             "autodetect": True,
             "timePartitioning": {"type": "DAY", "field": "fecha_ultima_act"}
         }
