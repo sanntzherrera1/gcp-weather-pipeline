@@ -4,33 +4,11 @@ Pipeline end-to-end para ingesta y procesamiento de datos del clima usando servi
 
 ## 🏗️ Arquitectura
 
-### Streaming Ingestion
-```
-Cloud Scheduler (cada X min/hs/dia)
-    ↓
-Publisher Cloud Function (HTTP trigger)
-    ↓
-Pub/Sub Topic (topic_clima)
-    ↓
-Push Subscription (sub_clima_push)
-    ↓
-Subscriber Cloud Function (HTTP trigger)
-    ↓
-Cloud Storage (clima_raw_data_pj)
-```
+![Diagrama de Arquitectura](./docs/diagrama_arquitectura.png)
 
-### Batch Processing
-```
-Cloud Storage (clima_raw_data_pj)
-    ↓
-Cloud Composer / Apache Airflow
-    ↓
-BigQuery Raw (clima_raw)
-    ↓
-BigQuery Analytics (clima_analytics)
-    ↓
-Looker Studio
-```
+## 📈  Monitoreo 
+
+![Monitorio de Airflow](./docs/clima_task_pipeline.png)
 
 ## 📁 Estructura del Proyecto
 ```
@@ -145,7 +123,7 @@ Cada X tiempo se captura:
 - [x] Carga a dataset en BigQuery
 - [x] Data quality checks
 - [x] Transformación con SQL en DAGs
-- [ ] Dashboards en Looker Studio
+- [x] Dashboards en Looker Studio
 
 ## 📝 Notas
 
