@@ -2,29 +2,13 @@
 
 Pipeline end-to-end para ingesta y procesamiento de datos del clima usando servicios serverless de Google Cloud Platform.
 
-## 🏗️ Arquitectura Actual
+## 🏗️ Arquitectura
 
-### Streaming Ingestion (Implementado)
-```
-Cloud Scheduler (cada X min/hs/dia)
-    ↓
-Publisher Cloud Function (HTTP trigger)
-    ↓
-Pub/Sub Topic (topic_clima)
-    ↓
-Push Subscription (sub_clima_push)
-    ↓
-Subscriber Cloud Function (HTTP trigger)
-    ↓
-Cloud Storage (clima_raw_data_pj)
-```
+![Diagrama de Arquitectura](./docs_images/diagrama_arquitectura.png)
 
-### Próximas Capas (Planificado)
-- **Batch Processing:** Apache Airflow / Cloud Composer
-- **Transformación:** Apache DataFusion
-- **Data Warehouse:** BigQuery
-- **Visualización:** Looker Studio
-- **Orquestación:** Airflow con branching para validación de datos
+## 📈  Monitoreo 
+
+![Monitorio de Airflow](./docs_images/clima_task_pipeline.png)
 
 ## 📁 Estructura del Proyecto
 ```
@@ -40,6 +24,9 @@ project_clima/
 │       │   └── gcs.py      # Operaciones de Cloud Storage
 │       ├── main.py         # Cloud Function subscriber
 │       └── requirements.txt
+├── airflow/
+│   └── dags/
+│       └── clima_pipeline_dag.py  # DAG de Airflow para batch processing
 ├── .env.example            # Template de variables de entorno
 ├── .gitignore
 └── README.md
@@ -56,6 +43,9 @@ project_clima/
 Crear archivo `.env` basado en `.env.example`:
 ```bash
 API_KEY=tu_api_key_de_openweathermap
+GCP_PROJECT_ID=tu_project_id
+BQ_DATASET_ID=dataset_clima
+GCS_BUCKET=tu_bucket_name
 ```
 
 ### Deploy Cloud Functions
@@ -94,6 +84,11 @@ gcloud scheduler jobs create http scheduler_clima \
   --http-method=GET
 ```
 
+### Deploy DAG en Cloud Composer
+```bash
+gsutil cp airflow/dags/clima_pipeline_dag.py gs://YOUR_COMPOSER_BUCKET/dags/
+```
+
 ## 🔧 Tecnologías
 
 - **Cloud Platform:** Google Cloud Platform (GCP)
@@ -101,15 +96,17 @@ gcloud scheduler jobs create http scheduler_clima \
 - **Messaging:** Cloud Pub/Sub
 - **Storage:** Cloud Storage (GCS)
 - **Scheduler:** Cloud Scheduler
+- **Orchestration:** Apache Airflow / Cloud Composer
+- **Data Warehouse:** BigQuery
+- **Visualización:** Looker Studio
 - **Language:** Python 3.11
 - **API:** OpenWeatherMap API
-- **Orchestration:** Apache Airflow / Cloud Composer
 
 ## 📊 Datos Capturados
 
 Cada X tiempo se captura:
 - Ciudad
-- Temperatura
+- Temperatura (Kelvin → Celsius en analytics)
 - Humedad
 - Presión atmosférica
 - Descripción del clima
@@ -119,13 +116,14 @@ Cada X tiempo se captura:
 ## 🎯 Roadmap
 
 - [x] Streaming ingestion con Cloud Functions
+- [x] Cloud Scheduler para automatización
 - [x] Pub/Sub messaging
 - [x] Almacenamiento raw en GCS
-- [ ] Procesamiento batch con Airflow
-- [ ] Transformación con DataFusion
-- [ ] Carga a BigQuery
-- [ ] Dashboards en Looker Studio
-- [ ] Data quality checks
+- [x] Procesamiento batch con Airflow
+- [x] Carga a dataset en BigQuery
+- [x] Data quality checks
+- [x] Transformación con SQL en DAGs
+- [x] Dashboards en Looker Studio
 
 ## 📝 Notas
 
