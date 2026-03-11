@@ -4,11 +4,11 @@ Pipeline end-to-end para ingesta y procesamiento de datos del clima usando servi
 
 ## 🏗️ Arquitectura
 
-![Diagrama de Arquitectura](./docs/diagrama_arquitectura.png)
+![Diagrama de Arquitectura](./docs_images/diagrama_arquitectura.png)
 
 ## 📈  Monitoreo 
 
-![Monitorio de Airflow](./docs/clima_task_pipeline.png)
+![Monitorio de Airflow](./docs_images/clima_task_pipeline.png)
 
 ## 📁 Estructura del Proyecto
 ```
